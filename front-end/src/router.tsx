@@ -4,7 +4,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Header from "./components/Header";
 
-// eslint-disable-next-line react-refresh/only-export-components
+// eslint-disable-next-line
 const Layout = () => {
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">

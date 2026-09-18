@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Input from "../components/Input";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Button from "../components/Button";
-import { useNavigate } from "react-router";
+import { UserContext } from "../contexts/UserContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const { setUser } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -24,6 +26,7 @@ const Login = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
+        credentials: "include",
       });
 
       if (response.status === 404) {
@@ -49,7 +52,7 @@ const Login = () => {
       if (response.status === 200) {
         setError("");
         const data = await response.json();
-        console.log(data);
+        setUser(data.user);
         navigate("/");
       }
     } catch (error) {
