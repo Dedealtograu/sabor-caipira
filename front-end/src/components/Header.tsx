@@ -1,24 +1,85 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { UserContext } from "../contexts/UserContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { LogOut, HandPlatter, Box, LayoutGrid, Plus } from "lucide-react";
 
 const Header = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+  const location = useLocation();
+
+  const handleAuthUser = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/me", {
+        credentials: "include",
+      });
+
+      if (response.status !== 200) {
+        console.error("deu ruim");
+        return;
+      }
+
+      const data = await response.json();
+
+      setUser(data);
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  };
+
+  const handdleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        console.error("deu ruim");
+        return;
+      }
+
+      setUser(null);
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  };
+
+  useEffect(() => {
+    handleAuthUser();
+  }, []);
+
+  const getNavItemClass = (path: string) => {
+    const baseClass =
+      "flex h-8.75 w-8.75 cursor-pointer items-center justify-center rounded-md border";
+
+    if (location.pathname === path) {
+      return `${baseClass} bg-gray-400`;
+    }
+
+    return baseClass;
+  };
 
   return (
     <div className="bg-orange-300">
       <div className="mx-auto flex w-full items-center justify-between p-3 md:w-187 md:p-0">
-        <img src="/logomenu.png" alt="Logo" />
+        <Link to="/">
+          <img src="/logomenu.png" alt="Logo" />
+        </Link>
         {user ? (
           <div className="text-md flex items-center gap-8 font-bold text-gray-700">
             <div className="flex items-center gap-2 text-blue-800">
-              <div className="flex h-8.75 w-8.75 cursor-pointer items-center justify-center rounded-md border">
-                <Box />
-              </div>
-              <div className="flex h-8.75 w-8.75 cursor-pointer items-center justify-center rounded-md border">
-                <LayoutGrid />
-              </div>
+              <Link to="/">
+                <div className={getNavItemClass("/")}>
+                  <Box />
+                </div>
+              </Link>
+              <Link to="/pedidos">
+                <div className={getNavItemClass("/pedidos")}>
+                  <LayoutGrid />
+                </div>
+              </Link>
               <div className="flex h-8.75 w-8.75 cursor-pointer items-center justify-center rounded-md border">
                 <Plus />
               </div>
@@ -31,7 +92,11 @@ const Header = () => {
             </div>
             <div className="flex items-center gap-2">
               <p>Olá, {user.name}</p>{" "}
-              <LogOut size={20} className="cursor-pointer" />
+              <LogOut
+                size={20}
+                className="cursor-pointer"
+                onClick={() => handdleLogout()}
+              />
             </div>
           </div>
         ) : (

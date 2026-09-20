@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Header from "./components/Header";
+import Pedidos from "./pages/pedidos";
 
 // eslint-disable-next-line
 const Layout = () => {
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/pedidos",
+        element: <Pedidos />,
       },
     ],
   },
