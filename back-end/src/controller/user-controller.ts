@@ -78,3 +78,16 @@ export const auth = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Erro ao autenticar" });
   }
 }
+
+export const logout = async (req: Request, res: Response) => {
+  const { user } = req.cookies;
+
+  if (user) {
+    res.clearCookie("user");
+    res.json({ message: "Logout realizado com sucesso" });
+    return;
+  }
+
+  res.status(400).json({ message: "Usuário não encontrado" });
+  return;
+}
