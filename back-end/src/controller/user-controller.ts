@@ -1,6 +1,7 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { db } from "../prisma/db";
+import jwt from "jsonwebtoken";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -23,6 +24,10 @@ export const login = async (req: Request, res: Response) => {
     }
 
     const { password: _, ...userWithoutPassword } = user;
+
+    const token = jwt.sign(userWithoutPassword, process.env.JWT_SECRET!);
+
+    res.cookie("user", token, { maxAge: 1000 * 1000 })
 
     res.status(200).json({ user: userWithoutPassword });
   } catch (error) {
@@ -54,5 +59,22 @@ export const register = async (req: Request, res: Response) => {
     console.error("Erro ao registrar usuário:", error);
     res.status(500).json({ message: "Erro interno do servidor" });
     return
+  }
+}
+
+export const auth = async (req: Request, res: Response) => {
+  try {
+    const token = req.cookies.user
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+
+    if (!decoded) {
+      return res.status(401).json({ message: "Não autorizado" });
+    }
+
+    res.status(200).json(decoded);
+    return;
+  } catch (error) {
+    console.error("Erro ao autenticar:", error);
+    return res.status(500).json({ message: "Erro ao autenticar" });
   }
 }
