@@ -64,14 +64,9 @@ export const register = async (req: Request, res: Response) => {
 
 export const auth = async (req: Request, res: Response) => {
   try {
-    const token = req.cookies.user
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    const { user } = req
 
-    if (!decoded) {
-      return res.status(401).json({ message: "Não autorizado" });
-    }
-
-    res.status(200).json(decoded);
+    res.status(200).json(user);
     return;
   } catch (error) {
     console.error("Erro ao autenticar:", error);
