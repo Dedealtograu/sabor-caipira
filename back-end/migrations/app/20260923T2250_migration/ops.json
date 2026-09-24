@@ -1,0 +1,44 @@
+[
+  {
+    "id": "dropDefault.product.category",
+    "label": "Drop default on \"product\".\"category\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "category",
+        "table": "product"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"category\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "product",
+          "category"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop default on \"category\"",
+        "sql": "ALTER TABLE \"public\".\"product\" ALTER COLUMN \"category\" DROP DEFAULT"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"category\" has no default",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"column_default\" IS NULL)) AS \"result\"",
+        "params": [
+          "public",
+          "product",
+          "category"
+        ]
+      }
+    ]
+  }
+]

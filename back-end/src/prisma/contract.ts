@@ -13,9 +13,21 @@ export const contract = defineContract({}, ({ field, model, rel }) => {
     },
   });
 
+  const Product = model("Product", {
+    fields: {
+      id: field.id.uuidv7String(),
+      name: field.text(),
+      description: field.text(),
+      category: field.text(),
+      image: field.text().default(""),
+      price: field.decimal(),
+    },
+  });
+
   return {
     models: {
       User,
+      Product,
     },
   };
 });

@@ -16,4 +16,3 @@ export async function connectToDatabase() {
     console.error("Erro ao conectar ao banco de dados", error);
   }
 }
-
