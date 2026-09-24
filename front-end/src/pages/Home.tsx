@@ -42,7 +42,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="mx-auto h-200 w-full justify-center gap-2 bg-orange-600 px-3 md:w-300 md:px-2">
+    <div className="mx-auto h-210 w-full justify-center gap-2 bg-orange-600 px-3 md:w-300 md:px-2">
       <div className="flex justify-center gap-2 py-4">
         <div
           className={getCategoryClass("jantinhas")}

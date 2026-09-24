@@ -1,9 +1,11 @@
 import { Link, useLocation } from "react-router";
 import { UserContext } from "../contexts/UserContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LogOut, ShoppingCart, Box, LayoutGrid, Plus } from "lucide-react";
+import Order from "./order";
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const { user, setUser } = useContext(UserContext);
   const location = useLocation();
 
@@ -63,6 +65,7 @@ const Header = () => {
 
   return (
     <div className="mx-auto w-full bg-[#ff9a4d] md:w-300">
+      {isOpen && <Order setIsOpen={setIsOpen} isOpen={isOpen} />}
       <div className="mx-auto flex w-full items-center justify-between p-3 md:w-187 md:p-0">
         <Link to="/">
           <img src="/logomenu.png" alt="Logo" />
@@ -87,7 +90,7 @@ const Header = () => {
               </div>
             )}
             <div className="relative cursor-pointer">
-              <ShoppingCart size={20} />
+              <ShoppingCart size={20} onClick={() => setIsOpen(!isOpen)} />
               <p className="absolute -top-3 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-green-800 text-xs text-white">
                 1
               </p>
