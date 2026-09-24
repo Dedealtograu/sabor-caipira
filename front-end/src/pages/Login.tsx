@@ -53,6 +53,11 @@ const Login = () => {
         setError("");
         const data = await response.json();
         setUser(data.user);
+
+        // if (data.user.mission === "garçom") {
+        //   navigate("/new-order");
+        // }
+
         navigate("/");
       }
     } catch (error) {

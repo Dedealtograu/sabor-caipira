@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router";
 import { UserContext } from "../contexts/UserContext";
 import { useContext, useEffect } from "react";
-import { LogOut, HandPlatter, Box, LayoutGrid, Plus } from "lucide-react";
+import { LogOut, ShoppingCart, Box, LayoutGrid, Plus } from "lucide-react";
 
 const Header = () => {
   const { user, setUser } = useContext(UserContext);
@@ -62,30 +62,32 @@ const Header = () => {
   };
 
   return (
-    <div className="bg-orange-300">
+    <div className="mx-auto w-full bg-[#ff9a4d] md:w-300">
       <div className="mx-auto flex w-full items-center justify-between p-3 md:w-187 md:p-0">
         <Link to="/">
           <img src="/logomenu.png" alt="Logo" />
         </Link>
         {user ? (
           <div className="text-md flex items-center gap-8 font-bold text-gray-700">
-            <div className="flex items-center gap-2 text-blue-800">
-              <Link to="/">
-                <div className={getNavItemClass("/")}>
-                  <Box />
+            {user.admin && (
+              <div className="hidden items-center gap-2 text-blue-800 md:flex">
+                <Link to="/">
+                  <div className={getNavItemClass("/")}>
+                    <Box />
+                  </div>
+                </Link>
+                <Link to="/pedidos">
+                  <div className={getNavItemClass("/pedidos")}>
+                    <LayoutGrid />
+                  </div>
+                </Link>
+                <div className="flex h-8.75 w-8.75 cursor-pointer items-center justify-center rounded-md border">
+                  <Plus />
                 </div>
-              </Link>
-              <Link to="/pedidos">
-                <div className={getNavItemClass("/pedidos")}>
-                  <LayoutGrid />
-                </div>
-              </Link>
-              <div className="flex h-8.75 w-8.75 cursor-pointer items-center justify-center rounded-md border">
-                <Plus />
               </div>
-            </div>
+            )}
             <div className="relative cursor-pointer">
-              <HandPlatter size={20} />
+              <ShoppingCart size={20} />
               <p className="absolute -top-3 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-green-800 text-xs text-white">
                 1
               </p>
