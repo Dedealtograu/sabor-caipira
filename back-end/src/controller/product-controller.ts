@@ -26,6 +26,10 @@ export const deleteProduct = async (req: Request, res: Response) => {
 
     const deleteProduct = await db.orm.public.Product.where({ id: String(id) }).delete();
 
+    if (!deleteProduct) {
+      return res.status(404).json({ message: "Erro ao deletar Produto" });
+    }
+
     res.json(deleteProduct);
   } catch (error) {
     console.error("Erro ao deletar produto:", error);

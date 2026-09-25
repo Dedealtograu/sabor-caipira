@@ -24,10 +24,19 @@ export const contract = defineContract({}, ({ field, model, rel }) => {
     },
   });
 
+  const OrderItem = model("OrderItem", {
+    fields: {
+      id: field.id.uuidv7String(),
+      productId: field.id.uuidv7String(),
+      userId: field.id.uuidv7String(),
+    }
+  });
+
   return {
     models: {
       User,
       Product,
+      OrderItem
     },
   };
 });
