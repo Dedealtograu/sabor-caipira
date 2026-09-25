@@ -1,4 +1,11 @@
-// use prisma-8
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
 
 model User {
   id        String   @id @default(uuid())
@@ -30,4 +37,3 @@ model OrderItem {
   userId String
   user User @relation(fields: [userId], references: [id])
 }
-  

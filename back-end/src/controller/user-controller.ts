@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { db } from "../prisma/db";
+import { prisma } from "../db";
 import jwt from "jsonwebtoken";
 
 export const login = async (req: Request, res: Response) => {
@@ -11,7 +11,7 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "E-mail e senha são obrigatórios" });
     }
 
-    const user = await db.orm.public.User.select("id", "name", "email", "password", "admin", "mission").where({ email }).first()
+    const user = await prisma.user.findFirst({ where: { email } })
 
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado" });
@@ -44,7 +44,7 @@ export const register = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Todos os campos são obrigatórios" });
     }
 
-    const user = await db.orm.public.User.select("id", "name", "email", "admin", "mission").where({ email }).first()
+    const user = await prisma.user.findFirst({ where: { email } })
 
     if (user?.email) {
       return res.status(409).json({ message: "Usuário já cadastrado" });
@@ -52,7 +52,14 @@ export const register = async (req: Request, res: Response) => {
 
     const hash = await bcrypt.hash(password, 10);
 
-    const newUser = await db.orm.public.User.create({ email, name, password: hash, mission })
+    const newUser = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hash,
+        mission
+      }
+    })
 
     res.status(201).json({ newUser });
   } catch (error) {

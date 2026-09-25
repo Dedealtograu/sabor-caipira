@@ -2,6 +2,7 @@ import { Router } from "express";
 import { login, register, auth, logout } from "./controller/user-controller";
 import { authMiddleware } from "./middlewares/auth.middleware";
 import { deleteProduct, getProducts } from "./controller/product-controller";
+import { getOrderItems } from "./controller/order-controller";
 
 export const router = Router();
 
@@ -14,3 +15,6 @@ router.post("/logout", authMiddleware, logout);
 // Rotas de produto
 router.get("/products", getProducts);
 router.delete("/delproduct/:id", deleteProduct);
+
+// Rotas de pedido
+router.get("/orders", getOrderItems);
