@@ -2,11 +2,13 @@ import { Link, useLocation } from "react-router";
 import { UserContext } from "../contexts/UserContext";
 import { useContext, useEffect, useState } from "react";
 import { LogOut, ShoppingCart, Box, LayoutGrid, Plus } from "lucide-react";
-import Order from "./order";
+import Order from "./Order";
+import { OrderItmsContext } from "../contexts/OrderItmsContext";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, setUser } = useContext(UserContext);
+  const { orderItems } = useContext(OrderItmsContext);
   const location = useLocation();
 
   const handleAuthUser = async () => {
@@ -92,7 +94,7 @@ const Header = () => {
             <div className="relative cursor-pointer">
               <ShoppingCart size={20} onClick={() => setIsOpen(!isOpen)} />
               <p className="absolute -top-3 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-green-800 text-xs text-white">
-                1
+                {orderItems.length}
               </p>
             </div>
             <div className="flex items-center gap-2">

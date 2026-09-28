@@ -1,12 +1,20 @@
 import { ChevronLeft, ChevronRight, Trash } from "lucide-react";
+import { formatterPrice } from "../utils/formatterPrice";
 
-const OrderItem = () => {
+type OrderItemType = {
+  id: string;
+  title: string;
+  price: number;
+  image: string;
+};
+
+const OrderItem = ({ id, title, price, image }: OrderItemType) => {
   return (
     <div className="flex items-center gap-3">
-      <img src="/dinner.svg" alt="dinner" className="w-16" />
+      <img src={`./${image}.svg`} alt="dinner" className="w-16" />
       <div className="flex-1">
-        <p className="font-bold uppercase">Jantinha de arroz</p>
-        <p className="text-xs">R$ 10,00</p>
+        <p className="font-bold uppercase">{title}</p>
+        <p className="text-xs">R$ {formatterPrice(Number(price))}</p>
         <div className="mt-1 flex items-center gap-3">
           <ChevronLeft
             size={30}
@@ -19,7 +27,7 @@ const OrderItem = () => {
           />
         </div>
       </div>
-      <Trash className="cursor-pointer" />
+      <Trash className="cursor-pointer" onClick={() => alert(id)} />
     </div>
   );
 };
