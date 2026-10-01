@@ -5,6 +5,7 @@ export type OrderItemType = {
   userId: number;
   productId: string;
   product: ProductType;
+  quantity: number;
 };
 
 export type OrderItemsContextType = {

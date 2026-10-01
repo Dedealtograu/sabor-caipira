@@ -8,7 +8,7 @@ import { OrderItmsContext } from "../contexts/OrderItmsContext";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, setUser } = useContext(UserContext);
-  const { orderItems } = useContext(OrderItmsContext);
+  const { orderItems, setOrderItems } = useContext(OrderItmsContext);
   const location = useLocation();
 
   const handleAuthUser = async () => {
@@ -50,8 +50,29 @@ const Header = () => {
     }
   };
 
+  const getOrderItems = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/orders", {
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        console.log("Erro na requisição");
+        return;
+      }
+
+      const data = await response.json();
+
+      setOrderItems(data);
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  };
+
   useEffect(() => {
     handleAuthUser();
+    getOrderItems();
   }, []);
 
   const getNavItemClass = (path: string) => {
@@ -64,6 +85,12 @@ const Header = () => {
 
     return baseClass;
   };
+
+  let orderCount = 0;
+
+  orderItems.forEach((item) => {
+    orderCount += item.quantity;
+  });
 
   return (
     <div className="mx-auto w-full bg-[#ff9a4d] md:w-300">
@@ -94,7 +121,7 @@ const Header = () => {
             <div className="relative cursor-pointer">
               <ShoppingCart size={20} onClick={() => setIsOpen(!isOpen)} />
               <p className="absolute -top-3 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-green-800 text-xs text-white">
-                {orderItems.length}
+                {orderCount}
               </p>
             </div>
             <div className="flex items-center gap-2">

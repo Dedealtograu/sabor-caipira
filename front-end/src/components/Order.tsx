@@ -49,6 +49,7 @@ const Order = ({ setIsOpen, isOpen }: OrderProps) => {
             title={item.product.name}
             price={item.product.price}
             image={item.product.image}
+            quantity={item.quantity}
             key={item.id}
           />
         ))}

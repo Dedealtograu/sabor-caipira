@@ -6,9 +6,10 @@ type OrderItemType = {
   title: string;
   price: number;
   image: string;
+  quantity: number;
 };
 
-const OrderItem = ({ id, title, price, image }: OrderItemType) => {
+const OrderItem = ({ id, title, price, image, quantity }: OrderItemType) => {
   return (
     <div className="flex items-center gap-3">
       <img src={`./${image}.svg`} alt="dinner" className="w-16" />
@@ -20,7 +21,7 @@ const OrderItem = ({ id, title, price, image }: OrderItemType) => {
             size={30}
             className="cursor-pointer rounded-md bg-red-500 p-1"
           />
-          <p className="font-bold">1</p>
+          <p className="font-bold">{quantity}</p>
           <ChevronRight
             size={30}
             className="cursor-pointer rounded-md bg-red-500 p-1"
