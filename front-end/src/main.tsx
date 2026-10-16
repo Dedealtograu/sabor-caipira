@@ -4,14 +4,14 @@ import "./index.css";
 import { RouterProvider } from "react-router";
 import { router } from "./router.tsx";
 import { UserProvider } from "./contexts/UserContext.tsx";
-import { OrderItmsProvider } from "./contexts/OrderItmsContext.tsx";
+import { DeskItmsProvider } from "./contexts/DeskItmsContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <UserProvider>
-      <OrderItmsProvider>
+      <DeskItmsProvider>
         <RouterProvider router={router} />
-      </OrderItmsProvider>
+      </DeskItmsProvider>
     </UserProvider>
   </StrictMode>,
 );

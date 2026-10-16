@@ -1,14 +1,7 @@
-import type { ProductType } from "./Product";
-
 export type OrderItemType = {
   id: string;
-  userId: number;
-  productId: string;
-  product: ProductType;
   quantity: number;
-};
-
-export type OrderItemsContextType = {
-  orderItems: OrderItemType[];
-  setOrderItems: React.Dispatch<React.SetStateAction<OrderItemType[]>>;
+  price: number;
+  productId: string;
+  orderId: string;
 };

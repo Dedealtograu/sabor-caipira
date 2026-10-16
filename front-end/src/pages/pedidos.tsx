@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardPedido from "../components/CardPedido";
+import type { OrderType } from "../types/Order";
 
 const Pedidos = () => {
   const [category, setCategory] = useState("pendente");
+  const [order, setOrder] = useState<OrderType[]>([]);
+
   const handleCategoryChange = (newCategory: string) => {
     setCategory(newCategory);
   };
@@ -20,8 +23,26 @@ const Pedidos = () => {
     return unselectedElement;
   };
 
+  const filteredOrders = order.filter((order) => order.status === category);
+
+  useEffect(() => {
+    const gtetOrders = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/orders", {
+          credentials: "include",
+        });
+        const data = await response.json();
+        setOrder(data);
+      } catch (error) {
+        console.error("Erro ao buscar pedidos:", error);
+      }
+    };
+
+    gtetOrders();
+  }, []);
+
   return (
-    <div className="mx-auto flex w-full flex-col justify-center gap-2 bg-orange-600 px-3 md:px-0">
+    <div className="mx-auto h-210 w-full justify-center gap-2 bg-orange-600 px-3 md:w-300 md:px-2">
       {/* Categorias */}
       <div className="flex justify-center gap-2 py-4">
         <div
@@ -38,7 +59,17 @@ const Pedidos = () => {
         </div>
       </div>
       <div className="grid grid-cols-3 gap-3">
-        <CardPedido />
+        {filteredOrders.map((order) => (
+          <CardPedido
+            key={order.id}
+            id={order.id}
+            status={order.status}
+            total={order.total}
+            deskNumber={order.deskNumber}
+            orderItems={order.orderItems}
+          />
+        ))}
+        {filteredOrders.length === 0 && <p>Não há pedidos desta categoria</p>}
       </div>
     </div>
   );

@@ -31,6 +31,10 @@ const Home = () => {
     const getProducts = async () => {
       try {
         const response = await fetch("http://localhost:3000/products");
+        if (!response.ok) {
+          setProducts([]);
+          return;
+        }
         const data = await response.json();
         setProducts(data);
       } catch (error) {

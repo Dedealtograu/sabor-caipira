@@ -2,14 +2,14 @@ import { ShoppingCart } from "lucide-react";
 import type { ProductType } from "../types/Product";
 import { formatterPrice } from "../utils/formatterPrice";
 import { useContext } from "react";
-import { OrderItmsContext } from "../contexts/OrderItmsContext";
+import { DeskItmsContext } from "../contexts/DeskItmsContext";
 
 const Product = ({ id, name, description, price, image }: ProductType) => {
-  const { orderItems, setOrderItems } = useContext(OrderItmsContext);
+  const { setDeskItems } = useContext(DeskItmsContext);
 
-  const getOrderItems = async () => {
+  const getDeskItems = async () => {
     try {
-      const response = await fetch("http://localhost:3000/orders", {
+      const response = await fetch("http://localhost:3000/desks", {
         credentials: "include",
       });
 
@@ -20,16 +20,16 @@ const Product = ({ id, name, description, price, image }: ProductType) => {
 
       const data = await response.json();
 
-      setOrderItems(data);
+      setDeskItems(data);
     } catch (error) {
       console.log(error);
       return;
     }
   };
 
-  const newOrderItem = async () => {
+  const newDeskItem = async () => {
     try {
-      const response = await fetch("http://localhost:3000/order", {
+      const response = await fetch("http://localhost:3000/desk", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +43,7 @@ const Product = ({ id, name, description, price, image }: ProductType) => {
         return;
       }
 
-      getOrderItems();
+      getDeskItems();
 
       const data = await response.json();
 
@@ -66,7 +66,7 @@ const Product = ({ id, name, description, price, image }: ProductType) => {
             <ShoppingCart
               size={18}
               className="cursor-pointer"
-              onClick={() => newOrderItem()}
+              onClick={() => newDeskItem()}
             />
           </div>
         </div>

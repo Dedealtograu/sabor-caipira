@@ -3,12 +3,12 @@ import { UserContext } from "../contexts/UserContext";
 import { useContext, useEffect, useState } from "react";
 import { LogOut, ShoppingCart, Box, LayoutGrid, Plus } from "lucide-react";
 import Order from "./Order";
-import { OrderItmsContext } from "../contexts/OrderItmsContext";
+import { DeskItmsContext } from "../contexts/DeskItmsContext";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, setUser } = useContext(UserContext);
-  const { orderItems, setOrderItems } = useContext(OrderItmsContext);
+  const { deskItems, setDeskItems } = useContext(DeskItmsContext);
   const location = useLocation();
 
   const handleAuthUser = async () => {
@@ -52,7 +52,7 @@ const Header = () => {
 
   const getOrderItems = async () => {
     try {
-      const response = await fetch("http://localhost:3000/orders", {
+      const response = await fetch("http://localhost:3000/desks", {
         credentials: "include",
       });
 
@@ -63,7 +63,7 @@ const Header = () => {
 
       const data = await response.json();
 
-      setOrderItems(data);
+      setDeskItems(data);
     } catch (error) {
       console.log(error);
       return;
@@ -88,7 +88,7 @@ const Header = () => {
 
   let orderCount = 0;
 
-  orderItems.forEach((item) => {
+  deskItems.forEach((item) => {
     orderCount += item.quantity;
   });
 
@@ -102,7 +102,7 @@ const Header = () => {
         {user ? (
           <div className="text-md flex items-center gap-8 font-bold text-gray-700">
             {user.admin && (
-              <div className="hidden items-center gap-2 text-blue-800 md:flex">
+              <div className="flex items-center gap-2 text-blue-800 md:flex">
                 <Link to="/">
                   <div className={getNavItemClass("/")}>
                     <Box />
