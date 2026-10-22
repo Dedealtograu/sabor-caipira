@@ -16,6 +16,27 @@ export const getProducts = async (req: Request, res: Response) => {
   }
 }
 
+export const getProductById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ message: "Id não fornecido" });
+    }
+
+    const product = await prisma.product.findUnique({ where: { id: String(id) } })
+
+    if (!product) {
+      return res.status(404).json({ message: "Produto não encontrado" });
+    }
+
+    return res.status(200).json(product);
+  } catch (error) {
+    console.error("Erro ao buscar produto:", error);
+    return res.status(500).json({ message: "Erro interno do servidor" });
+  }
+}
+
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { user } = req;

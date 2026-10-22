@@ -16,7 +16,8 @@ model User {
   admin     Boolean @default(false)
   login     String   @default("bloqueado")
 
-  orderItems OrderItem[]
+  deskItems DeskItem[]
+  orders Order[]
 }
 
 model Product {
@@ -27,14 +28,42 @@ model Product {
   image     String   @default("")
   price     Decimal
 
+  deskItems DeskItem[]
+  orderItems OrderItem[]
+}
+
+model DeskItem {
+  id String @id @default(uuid())
+  quantity Int @default(1)
+
+  productId String
+  product Product  @relation(fields: [productId], references: [id])
+
+  userId String
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Order {
+  id String   @id @default(uuid())
+  status String @default("pendente")
+  total Decimal
+  deskNumber Int
+  createdAt DateTime @default(now())
+  userId String
+  user User @relation(fields: [userId], references: [id])
+
   orderItems OrderItem[]
 }
 
 model OrderItem {
   id String @id @default(uuid())
-  quantity Int @default(1)
+  quantity Int
+  price Decimal
+
   productId String
-  product Product  @relation(fields: [productId], references: [id])
-  userId String
-  user User @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  orderId String
+  order Order @relation(fields: [orderId], references: [id])
 }
+  

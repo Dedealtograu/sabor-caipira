@@ -27,7 +27,7 @@ export const login = async (req: Request, res: Response) => {
 
     const token = jwt.sign(userWithoutPassword, process.env.JWT_SECRET!);
 
-    res.cookie("user", token, { maxAge: 1000 * 1000 })
+    res.cookie("user", token, { maxAge: 60 * 60 * 12 * 1000 })
 
     res.status(200).json({ user: userWithoutPassword });
   } catch (error) {
