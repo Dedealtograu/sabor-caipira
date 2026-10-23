@@ -18,8 +18,8 @@ const CardPedido = ({
   orderItems,
 }: OrderType) => {
   const [products, setProducts] = useState<ProductOrderType[]>([]);
-
   const quantities = orderItems.map((item: OrderItemType) => item.quantity);
+
   const getProducts = async () => {
     try {
       const response = await orderItems.map(async (item: OrderItemType) => {
@@ -41,6 +41,24 @@ const CardPedido = ({
       setProducts(productsData);
     } catch (error) {
       console.error("Erro ao buscar produtos do pedido:", error);
+    }
+  };
+
+  const changeStatus = async (newStatus: string) => {
+    try {
+      const response = await fetch(`http://localhost:3000/order/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (!response.ok) {
+        console.log("Erro ao atualizar o pedido");
+      }
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Erro ao atualizar o pedido:", error);
     }
   };
 
@@ -76,11 +94,17 @@ const CardPedido = ({
       </div>
       <div className="m-2 h-0.5 bg-gray-900"></div>
       <div className="m-2 flex justify-end">
-        <select className="font-bold">
-          <option value="pendente" defaultChecked>
-            {status}
+        <select
+          className="font-bold"
+          onChange={(e) => changeStatus(e.target.value)}
+          value={status}
+        >
+          <option value="pendente" selected={status === "pendente"} disabled>
+            Pendente
           </option>
-          <option value="entregue">Entregue</option>
+          <option value="entregue" selected={status === "entregue"}>
+            Entregue
+          </option>
         </select>
       </div>
     </div>

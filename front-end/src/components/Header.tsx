@@ -1,7 +1,14 @@
 import { Link, useLocation } from "react-router";
 import { UserContext } from "../contexts/UserContext";
 import { useContext, useEffect, useState } from "react";
-import { LogOut, ShoppingCart, Box, LayoutGrid, Plus } from "lucide-react";
+import {
+  LogOut,
+  ShoppingCart,
+  Box,
+  LayoutGrid,
+  Plus,
+  DollarSign,
+} from "lucide-react";
 import Order from "./Order";
 import { DeskItmsContext } from "../contexts/DeskItmsContext";
 
@@ -113,9 +120,11 @@ const Header = () => {
                     <LayoutGrid />
                   </div>
                 </Link>
-                <div className="flex h-8.75 w-8.75 cursor-pointer items-center justify-center rounded-md border">
-                  <Plus />
-                </div>
+                <Link to="/fechar-pedido">
+                  <div className={getNavItemClass("/fechar-pedido")}>
+                    <DollarSign />
+                  </div>
+                </Link>
               </div>
             )}
             <div className="relative cursor-pointer">
@@ -125,7 +134,7 @@ const Header = () => {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <p>Olá, {user.name}</p>{" "}
+              <p>{user.name}</p>{" "}
               <LogOut
                 size={20}
                 className="cursor-pointer"

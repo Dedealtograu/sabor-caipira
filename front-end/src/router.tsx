@@ -4,7 +4,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Header from "./components/Header";
 import Pedidos from "./pages/pedidos";
-import NewOrder from "./pages/newOrder";
+import CloseOrder from "./pages/CloseOrder";
 import PublicRoute from "./components/PublicRoute";
 
 // eslint-disable-next-line
@@ -30,8 +30,8 @@ export const router = createBrowserRouter([
         element: <Pedidos />,
       },
       {
-        path: "/new-order",
-        element: <NewOrder />,
+        path: "/fechar-pedido",
+        element: <CloseOrder />,
       },
     ],
   },

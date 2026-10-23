@@ -6,7 +6,20 @@ const Pedidos = () => {
   const [category, setCategory] = useState("pendente");
   const [order, setOrder] = useState<OrderType[]>([]);
 
+  const getOrders = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/orders", {
+        credentials: "include",
+      });
+      const data = await response.json();
+      setOrder(data);
+    } catch (error) {
+      console.error("Erro ao buscar pedidos:", error);
+    }
+  };
+
   const handleCategoryChange = (newCategory: string) => {
+    getOrders();
     setCategory(newCategory);
   };
 
@@ -26,20 +39,8 @@ const Pedidos = () => {
   const filteredOrders = order.filter((order) => order.status === category);
 
   useEffect(() => {
-    const gtetOrders = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/orders", {
-          credentials: "include",
-        });
-        const data = await response.json();
-        setOrder(data);
-      } catch (error) {
-        console.error("Erro ao buscar pedidos:", error);
-      }
-    };
-
-    gtetOrders();
-  }, []);
+    getOrders();
+  }, [order]);
 
   return (
     <div className="mx-auto h-210 w-full justify-center gap-2 bg-orange-600 px-3 md:w-300 md:px-2">
@@ -57,17 +58,16 @@ const Pedidos = () => {
         >
           Entregues
         </div>
+        <div
+          className={getCategoryClass("cancelado")}
+          onClick={() => handleCategoryChange("cancelado")}
+        >
+          Cancelados
+        </div>
       </div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="flex flex-col gap-3 md:grid md:grid-cols-3">
         {filteredOrders.map((order) => (
-          <CardPedido
-            key={order.id}
-            id={order.id}
-            status={order.status}
-            total={order.total}
-            deskNumber={order.deskNumber}
-            orderItems={order.orderItems}
-          />
+          <CardPedido key={order.id} {...order} />
         ))}
         {filteredOrders.length === 0 && <p>Não há pedidos desta categoria</p>}
       </div>
