@@ -4,7 +4,7 @@ export const colors = {
   primary: "#FFFFFF",
   brand: "#FF3F4B",
   green: "#3FFFA3",
-  red: "#FF3F4B",
+  red: "#7c171d",
   gray: "#8A8A8A",
   borderColor: "#8A887a",
   tabsColor: "#EB9460",

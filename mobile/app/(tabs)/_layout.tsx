@@ -24,7 +24,12 @@ export default function AuthenticatedLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "orange",
+        headerShown: true,
+        headerStyle: { backgroundColor: colors.tabsColor },
+        headerTintColor: "#19432e",
+        headerTitleStyle: { fontWeight: "bold" },
+        headerShadowVisible: false,
+        tabBarActiveTintColor: "#19432e",
         tabBarStyle: { backgroundColor: colors.tabsColor },
         tabBarLabelStyle: { fontSize: 16, fontWeight: "bold" },
       }}
@@ -32,6 +37,7 @@ export default function AuthenticatedLayout() {
       <Tabs.Screen
         name="index"
         options={{
+          headerShown: false,
           title: "Home",
           tabBarIcon: () => <FontAwesome name="home" size={30} color="black" />,
         }}
